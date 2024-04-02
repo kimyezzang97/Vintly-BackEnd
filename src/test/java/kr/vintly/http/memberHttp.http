@@ -1,0 +1,3 @@
+# member 중복 ID 조회
+GET http://localhost:8080/member/id/test
+Accept: application/json
