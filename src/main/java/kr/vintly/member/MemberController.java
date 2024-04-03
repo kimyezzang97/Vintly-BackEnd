@@ -32,6 +32,6 @@ public class MemberController {
                         .message("")
                         .data(memberService.getChkId(id))
                         .build()
-                , HttpStatus.ACCEPTED);
+                , HttpStatus.OK);
     }
 }
