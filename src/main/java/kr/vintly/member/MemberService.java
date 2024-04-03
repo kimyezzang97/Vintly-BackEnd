@@ -13,7 +13,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public int getChkId(String id){
+    public Integer getChkId(String id){
         return memberRepository.countByMemberId(id);
     }
 }

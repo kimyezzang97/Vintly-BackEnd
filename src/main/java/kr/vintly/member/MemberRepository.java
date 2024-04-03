@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // ID 중복 확인
-    int countByMemberId(String memberId);
+    Integer countByMemberId(String memberId);
 
 }
