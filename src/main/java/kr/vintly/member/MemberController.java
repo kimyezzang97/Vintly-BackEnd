@@ -34,4 +34,30 @@ public class MemberController {
                         .build()
                 , HttpStatus.OK);
     }
+
+    // email 중복 체크
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Message> getChkEmail(@PathVariable("email") String email){
+        return new ResponseEntity<>(
+                Message.builder()
+                        .status(StatusEnum.OK)
+                        .message("")
+                        .data(memberService.getChkEmail(email))
+                        .build()
+                , HttpStatus.OK);
+    }
+
+
+    // nickname 중복 체크
+    @GetMapping("/nickname/{nickname}")
+    public ResponseEntity<Message> getChkNickname(@PathVariable("nickname") String nickname){
+        return new ResponseEntity<>(
+                Message.builder()
+                        .status(StatusEnum.OK)
+                        .message("")
+                        .data(memberService.getChkNickname(nickname))
+                        .build()
+                , HttpStatus.OK);
+    }
+
 }
