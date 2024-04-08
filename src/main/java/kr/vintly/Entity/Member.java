@@ -1,15 +1,13 @@
 package kr.vintly.Entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @Entity(name = "member")
@@ -63,7 +61,8 @@ public class Member {
     @CreatedDate()
     private Timestamp emailExDate;
 
-    protected Member(String memberId, String pw, String name, String address,
+    @Builder
+    public Member(String memberId, String pw, String name, String address,
                      String detailAddress, String nickname, Date birth, String email,
                      String gender, String emailCode){
         this.memberId = memberId;
@@ -76,7 +75,7 @@ public class Member {
         this.email = email;
         this.gender = gender;
         this.useYn = "K"; // 이메일 인증 대기
-        this.emailCode = emailCode;
+        this.emailCode = String.valueOf(ThreadLocalRandom.current().nextInt(10000,1000000)); // 이메일코드 6자리 생성;
         this.emailExDate = Timestamp.valueOf(LocalDateTime.now().plusDays(3)); //만든 날짜 보다 3일 후 입력
     }
 }
