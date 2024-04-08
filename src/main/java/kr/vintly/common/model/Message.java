@@ -1,4 +1,4 @@
-package kr.vintly.common;
+package kr.vintly.common.model;
 
 import lombok.Builder;
 import lombok.Getter;
