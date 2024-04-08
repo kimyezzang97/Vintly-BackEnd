@@ -4,6 +4,8 @@ import kr.vintly.Entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
+
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
@@ -21,4 +23,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // Member 엔티티 가져오기
     Member findByMemberIdAndEmailCode(String memberId, String emailCode);
+
+    // 인증기간 지난 ID 삭제
+    int deleteByEmailExDateBeforeAndUseYn(Timestamp today, String useYn);
 }
