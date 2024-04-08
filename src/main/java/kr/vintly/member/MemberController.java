@@ -1,15 +1,16 @@
 package kr.vintly.member;
 
-import kr.vintly.common.Message;
-import kr.vintly.common.StatusEnum;
-import org.hibernate.annotations.Array;
+import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
+import kr.vintly.common.model.Message;
+import kr.vintly.common.model.StatusEnum;
+import kr.vintly.member.model.req.ReqJoinDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/member")
@@ -60,4 +61,9 @@ public class MemberController {
                 , HttpStatus.OK);
     }
 
+    // 회원가입
+    @PostMapping("/join")
+    public ResponseEntity<?> createUser(@Valid @RequestBody ReqJoinDTO reqJoinDTO) throws MessagingException, IOException {
+        return memberService.createMember(reqJoinDTO);
+    }
 }
