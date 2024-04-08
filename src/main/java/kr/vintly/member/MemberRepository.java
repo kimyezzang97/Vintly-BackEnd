@@ -16,4 +16,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 닉네임 중복 체크
     Integer countByNickname(String nickname);
 
+    // 아이디, 인증코드 체크
+    Integer countByMemberIdAndEmailCode(String memberId, String emailCode);
+
+    // Member 엔티티 가져오기
+    Member findByMemberIdAndEmailCode(String memberId, String emailCode);
 }

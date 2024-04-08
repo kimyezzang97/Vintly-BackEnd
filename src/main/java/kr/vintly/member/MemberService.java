@@ -1,6 +1,7 @@
 package kr.vintly.member;
 
 import jakarta.mail.MessagingException;
+import kr.vintly.Entity.Member;
 import kr.vintly.common.model.Message;
 import kr.vintly.common.model.StatusEnum;
 import kr.vintly.member.model.req.ReqJoinDTO;
@@ -91,5 +92,37 @@ public class MemberService {
         emailValues.put("code", code);
 
         mailService.mailSend(mailDTO, emailValues,"join");
+    }
+
+    // 메일 인증 처리
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseEntity<?> enableMember(String memberId, String emailCode){
+        int chk = memberRepository.countByMemberIdAndEmailCode(memberId, emailCode);
+        if(chk < 1){
+            notExistMember();
+
+        } else {
+            Member member = memberRepository.findByMemberIdAndEmailCode(memberId, emailCode);
+            member.enableMember();
+            memberRepository.save(member);
+        }
+
+        return new ResponseEntity<>(
+                Message.builder()
+                        .status(StatusEnum.OK)
+                        .message("이메일 인증에 성공하였습니다. 로그인 후 사용 해주세요.")
+                        .data("")
+                        .build()
+                , HttpStatus.OK);
+    }
+
+    private ResponseEntity<Message> notExistMember(){
+        return new ResponseEntity<>(
+                Message.builder()
+                        .status(StatusEnum.BAD_REQUEST)
+                        .message("ID가 존재하지 않습니다. 회원가입을 해주세요.")
+                        .data("")
+                        .build()
+                , HttpStatus.OK);
     }
 }

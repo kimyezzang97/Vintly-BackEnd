@@ -63,7 +63,15 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/join")
-    public ResponseEntity<?> createUser(@Valid @RequestBody ReqJoinDTO reqJoinDTO) throws MessagingException, IOException {
+    public ResponseEntity<?> createMember(@Valid @RequestBody ReqJoinDTO reqJoinDTO) throws MessagingException, IOException {
         return memberService.createMember(reqJoinDTO);
+    }
+
+    // 회원가입 인증
+    @GetMapping("/enable")
+    public String enableMember(@RequestParam String id, @RequestParam String emailCode)  {
+        Message message = (Message) memberService.enableMember(id, emailCode).getBody();
+        return message.getMessage();
+        //return memberService.enableMember(id, emailCode);
     }
 }

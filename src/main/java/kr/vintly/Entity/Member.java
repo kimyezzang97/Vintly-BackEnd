@@ -78,4 +78,8 @@ public class Member {
         this.emailCode = String.valueOf(ThreadLocalRandom.current().nextInt(10000,1000000)); // 이메일코드 6자리 생성;
         this.emailExDate = Timestamp.valueOf(LocalDateTime.now().plusDays(3)); //만든 날짜 보다 3일 후 입력
     }
+
+    public void enableMember(){
+        this.useYn ="Y";
+    }
 }
