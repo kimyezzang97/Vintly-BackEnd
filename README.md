@@ -8,3 +8,6 @@
 - DB : MariaDB
 - ORM : Spring Data JPA
 
+---
+### :fireworks: 개발 사이트
+- http://www.yezzang.pe.kr:1010
