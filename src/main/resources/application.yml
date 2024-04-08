@@ -12,3 +12,23 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+  mail:
+    host: smtp.naver.com
+    port: 587
+    username: jvintaged@naver.com
+    password: junior12!@
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    check-template-location: true
+    cache: false
