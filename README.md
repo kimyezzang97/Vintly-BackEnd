@@ -10,8 +10,8 @@
 
 ---
 ### 📝 API 명세서
-[명세서 바로가기](https://docs.google.com/spreadsheets/d/1EUDMoNsk_XbtfO6YnxemJxFxtNvjM3NPqIAC7k6i240/edit#gid=0)
+- [명세서 바로가기](https://docs.google.com/spreadsheets/d/1EUDMoNsk_XbtfO6YnxemJxFxtNvjM3NPqIAC7k6i240/edit#gid=0)
 
 ---
 ### :fireworks: 개발 사이트
-- http://www.yezzang.pe.kr:1010
+- [개발사이트 바로가기](http://www.yezzang.pe.kr:1010)
