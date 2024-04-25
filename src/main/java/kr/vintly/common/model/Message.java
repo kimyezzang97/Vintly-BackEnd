@@ -1,10 +1,11 @@
 package kr.vintly.common.model;
 
+import kr.vintly.common.exception.StatusEnum;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Message {
+public class Message { // Response Message
     private StatusEnum status;
     private String message;
     private Object data;
@@ -15,4 +16,5 @@ public class Message {
         this.message = message;
         this.data = data;
     }
+
 }
