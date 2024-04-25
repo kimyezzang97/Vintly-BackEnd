@@ -9,5 +9,9 @@
 - ORM : Spring Data JPA
 
 ---
+### 📝 기술스택
+https://docs.google.com/spreadsheets/d/1EUDMoNsk_XbtfO6YnxemJxFxtNvjM3NPqIAC7k6i240/edit#gid=0
+
+---
 ### :fireworks: 개발 사이트
 - http://www.yezzang.pe.kr:1010
