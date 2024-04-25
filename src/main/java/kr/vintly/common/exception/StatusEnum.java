@@ -13,8 +13,8 @@ public enum StatusEnum {
     BAD_REQUEST(""),
 
     // Member
-    JOIN_CONFLICT("중복 확인을 해주세요.");
-
+    JOIN_CONFLICT("중복 확인을 해주세요."),
+    MEMBER_NOT_EXIST("ID가 존재하지 않습니다.");
 
     private final String message;
 }
