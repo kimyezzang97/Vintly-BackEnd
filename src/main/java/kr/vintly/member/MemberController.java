@@ -6,11 +6,14 @@ import kr.vintly.common.model.Message;
 import kr.vintly.common.model.StatusEnum;
 import kr.vintly.member.model.req.ReqJoinDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/members")
@@ -27,38 +30,31 @@ public class MemberController {
     @GetMapping("/id/{id}")
     //@ResponseStatus(HttpStatus.OK) HTTP STATUS 예시
     public ResponseEntity<?> getChkId(@PathVariable("id") String id){
-        // return new ResponseEntity<>(message, headers, HttpStatus.OK); // 헤더까지 수정 가능
-        return new ResponseEntity<>(
-                Message.builder()
-                        .status(StatusEnum.OK)
-                        .message("")
-                        .data(memberService.getChkId(id))
-                        .build()
-                , HttpStatus.OK);
+        //HttpHeaders headers=new HttpHeaders(); headers.add("Custom-Header","bar");
+        //return new ResponseEntity<>(memberService.getChkId(id), headers, HttpStatus.OK); // 헤더까지 수정 가능
+        return ResponseEntity.ok(Message.builder()
+                .status(StatusEnum.OK)
+                .message("")
+                .data(memberService.getChkId(id)).build());
     }
 
     // email 중복 체크
     @GetMapping("/email/{email}")
     public ResponseEntity<?> getChkEmail(@PathVariable("email") String email){
-        return ResponseEntity.ok(
-                Message.builder()
+        return ResponseEntity.ok(Message.builder()
                 .status(StatusEnum.OK)
-                .data(memberService.getChkEmail(email))
-                .build()
-        );
+                .message("")
+                .data(memberService.getChkEmail(email)).build());
     }
 
 
     // nickname 중복 체크
     @GetMapping("/nickname/{nickname}")
     public ResponseEntity<?> getChkNickname(@PathVariable("nickname") String nickname){
-        return ResponseEntity.ok(
-                Message.builder()
-                        .status(StatusEnum.OK)
-                        .message("")
-                        .data(memberService.getChkNickname(nickname))
-                        .build()
-        );
+        return ResponseEntity.ok(Message.builder()
+                .status(StatusEnum.OK)
+                .message("")
+                .data(memberService.getChkNickname(nickname)).build());
     }
 
     // 회원가입
