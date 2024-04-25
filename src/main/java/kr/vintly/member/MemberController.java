@@ -72,13 +72,7 @@ public class MemberController {
     // 회원가입 인증
     @GetMapping("/enable")
     public String enableMember(@RequestParam String id, @RequestParam String emailCode)  {
-        Message message = (Message) memberService.enableMember(id, emailCode).getBody();
-        return message.getMessage();
-        //return memberService.enableMember(id, emailCode);
-    }
-
-    @PostMapping("/test")
-    public ResponseEntity<?> test() {
-        throw new JoinConflictException();
+        memberService.enableMember(id, emailCode);
+        return "이메일 인증에 성공하였습니다. 로그인 후 사용 해주세요.";
     }
 }

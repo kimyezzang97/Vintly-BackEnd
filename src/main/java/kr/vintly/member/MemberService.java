@@ -3,6 +3,7 @@ package kr.vintly.member;
 import jakarta.mail.MessagingException;
 import kr.vintly.Entity.Member;
 import kr.vintly.common.exception.member.JoinConflictException;
+import kr.vintly.common.exception.member.MemberNotExistException;
 import kr.vintly.common.model.Message;
 import kr.vintly.common.exception.StatusEnum;
 import kr.vintly.member.model.req.ReqJoinDTO;
@@ -66,8 +67,11 @@ public class MemberService {
 
     // 회원가입 인증 메일 발송
     public void mailSend(ReqJoinDTO reqJoinDTO, String code) throws MessagingException, IOException {
-        MailDTO mailDTO = MailDTO.builder().address(reqJoinDTO.getEmail())
-                .title("회원가입").message("회원가입 메시지").build();
+        MailDTO mailDTO = MailDTO.builder()
+                .address(reqJoinDTO.getEmail())
+                .title("회원가입")
+                .message("회원가입 메시지")
+                .build();
 
         HashMap<String, String> emailValues = new HashMap<>();
         emailValues.put("id", reqJoinDTO.getMemberId());
@@ -78,33 +82,15 @@ public class MemberService {
 
     // 메일 인증 처리
     @Transactional(rollbackFor = Exception.class)
-    public ResponseEntity<?> enableMember(String memberId, String emailCode){
+    public void enableMember(String memberId, String emailCode){
         int chk = memberRepository.countByMemberIdAndEmailCode(memberId, emailCode);
         if(chk < 1){
-            notExistMember();
+            throw new MemberNotExistException();
 
         } else {
             Member member = memberRepository.findByMemberIdAndEmailCode(memberId, emailCode);
             member.enableMember();
             memberRepository.save(member);
         }
-
-        return new ResponseEntity<>(
-                Message.builder()
-                        .status(StatusEnum.OK)
-                        .message("이메일 인증에 성공하였습니다. 로그인 후 사용 해주세요.")
-                        .data("")
-                        .build()
-                , HttpStatus.OK);
-    }
-
-    private ResponseEntity<Message> notExistMember(){
-        return new ResponseEntity<>(
-                Message.builder()
-                        .status(StatusEnum.BAD_REQUEST)
-                        .message("ID가 존재하지 않습니다. 회원가입을 해주세요.")
-                        .data("")
-                        .build()
-                , HttpStatus.OK);
     }
 }
