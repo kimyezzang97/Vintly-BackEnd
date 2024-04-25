@@ -1,19 +1,20 @@
-package kr.vintly.common;
+package kr.vintly.common.exception;
 
+import kr.vintly.common.exception.member.JoinConflictException;
 import kr.vintly.common.model.Message;
-import kr.vintly.common.model.StatusEnum;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice   // 전역 설정을 위한 annotaion
-@RestController
+@RestControllerAdvice   // RestController 전체 적용, ControllerAdvice 도 존재함
 public class ExceptionAdvisor {
+
+    /**
+    @Valid 또는 @Validated로 binding error 발생시 발생하는 예외
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity processValidationError(MethodArgumentNotValidException exception) {
         BindingResult bindingResult = exception.getBindingResult();
@@ -29,12 +30,22 @@ public class ExceptionAdvisor {
 //            builder.append("]");
         }
 
-        return new ResponseEntity<>(
-                Message.builder()
+        return ResponseEntity.ok(Message.builder()
                         .status(StatusEnum.BAD_REQUEST)
                         .message(builder.toString())
                         .data("")
-                        .build()
-                ,HttpStatus.OK);
+                        .build());
     }
+
+    // JOIN - ID, email, nickname 중 1개 중복
+    @ExceptionHandler(JoinConflictException.class)
+    protected ResponseEntity<Message> joinConflict(JoinConflictException exception) {
+        return ResponseEntity.ok(Message.builder()
+                .status(exception.getStatus())
+                .message(exception.getStatus().getMessage())
+                .data("")
+                .build());
+    }
+
+
 }
