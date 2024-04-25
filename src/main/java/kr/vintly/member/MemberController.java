@@ -2,18 +2,16 @@ package kr.vintly.member;
 
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import kr.vintly.common.exception.member.JoinConflictException;
 import kr.vintly.common.model.Message;
-import kr.vintly.common.model.StatusEnum;
+import kr.vintly.common.exception.StatusEnum;
 import kr.vintly.member.model.req.ReqJoinDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/members")
@@ -44,7 +42,8 @@ public class MemberController {
         return ResponseEntity.ok(Message.builder()
                 .status(StatusEnum.OK)
                 .message("")
-                .data(memberService.getChkEmail(email)).build());
+                .data(memberService.getChkEmail(email))
+                .build());
     }
 
 
@@ -54,13 +53,20 @@ public class MemberController {
         return ResponseEntity.ok(Message.builder()
                 .status(StatusEnum.OK)
                 .message("")
-                .data(memberService.getChkNickname(nickname)).build());
+                .data(memberService.getChkNickname(nickname))
+                .build());
     }
 
     // 회원가입
     @PostMapping("/join")
     public ResponseEntity<?> createMember(@Valid @RequestBody ReqJoinDTO reqJoinDTO) throws MessagingException, IOException {
-        return memberService.createMember(reqJoinDTO);
+        memberService.createMember(reqJoinDTO);
+
+        return ResponseEntity.ok(Message.builder()
+                .status(StatusEnum.OK)
+                .message("")
+                .message(reqJoinDTO.getMemberId() + " ID로 회원가입을 성공하였습니다.")
+                .build());
     }
 
     // 회원가입 인증
@@ -69,5 +75,10 @@ public class MemberController {
         Message message = (Message) memberService.enableMember(id, emailCode).getBody();
         return message.getMessage();
         //return memberService.enableMember(id, emailCode);
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<?> test() {
+        throw new JoinConflictException();
     }
 }

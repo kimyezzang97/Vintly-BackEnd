@@ -2,8 +2,9 @@ package kr.vintly.member;
 
 import jakarta.mail.MessagingException;
 import kr.vintly.Entity.Member;
+import kr.vintly.common.exception.member.JoinConflictException;
 import kr.vintly.common.model.Message;
-import kr.vintly.common.model.StatusEnum;
+import kr.vintly.common.exception.StatusEnum;
 import kr.vintly.member.model.req.ReqJoinDTO;
 import kr.vintly.util.mail.MailService;
 import kr.vintly.util.mail.model.MailDTO;
@@ -47,39 +48,20 @@ public class MemberService {
 
     // 회원가입 처리
     @Transactional(rollbackFor = Exception.class)
-    public ResponseEntity<Message> createMember(ReqJoinDTO reqJoinDTO) throws MessagingException, IOException{
+    public void createMember(ReqJoinDTO reqJoinDTO) throws MessagingException, IOException{
         // 중복체크 확인
-        if(0!=getChkId(reqJoinDTO.getMemberId()) || 0!=getChkEmail(reqJoinDTO.getEmail()) || 0!=getChkNickname(reqJoinDTO.getNickname())){
-            return chkConflictMember();
+        if(getChkId(reqJoinDTO.getMemberId()) > 0 || getChkEmail(reqJoinDTO.getEmail()) > 0 || getChkNickname(reqJoinDTO.getNickname()) > 0 ){
+            throw new JoinConflictException();
         }
 
         // 비밀번호 암호화
         reqJoinDTO.encPw(bCryptPasswordEncoder.encode(reqJoinDTO.getPw()));
 
-        // email 코드
+        // email 코드 및 DB 회원정보 저장
         String code = memberRepository.save(reqJoinDTO.toEntity()).getEmailCode();
 
         // 인증메일 발송
-        mailSend(reqJoinDTO,code);
-
-        return new ResponseEntity<>(
-                Message.builder()
-                        .status(StatusEnum.OK)
-                        .message(reqJoinDTO.getMemberId() + " ID로 회원가입을 성공하였습니다.")
-                        .data("")
-                        .build()
-                ,HttpStatus.OK);
-    }
-
-    // 중복체크
-    private ResponseEntity<Message> chkConflictMember() {
-            return new ResponseEntity<>(
-                    Message.builder()
-                            .status(StatusEnum.CONFLICT)
-                            .message("중복확인을 다시 해주세요.")
-                            .data("")
-                            .build()
-                    , HttpStatus.OK);
+        mailSend(reqJoinDTO, code);
     }
 
     // 회원가입 인증 메일 발송
