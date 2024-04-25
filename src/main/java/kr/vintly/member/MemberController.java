@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/members")
 public class MemberController {
 
     private MemberService memberService;
@@ -25,7 +25,8 @@ public class MemberController {
 
     // ID 중복 확인
     @GetMapping("/id/{id}")
-    public ResponseEntity<Message> getChkId(@PathVariable("id") String id){
+    //@ResponseStatus(HttpStatus.OK) HTTP STATUS 예시
+    public ResponseEntity<?> getChkId(@PathVariable("id") String id){
         // return new ResponseEntity<>(message, headers, HttpStatus.OK); // 헤더까지 수정 가능
         return new ResponseEntity<>(
                 Message.builder()
@@ -38,27 +39,26 @@ public class MemberController {
 
     // email 중복 체크
     @GetMapping("/email/{email}")
-    public ResponseEntity<Message> getChkEmail(@PathVariable("email") String email){
-        return new ResponseEntity<>(
+    public ResponseEntity<?> getChkEmail(@PathVariable("email") String email){
+        return ResponseEntity.ok(
                 Message.builder()
-                        .status(StatusEnum.OK)
-                        .message("")
-                        .data(memberService.getChkEmail(email))
-                        .build()
-                , HttpStatus.OK);
+                .status(StatusEnum.OK)
+                .data(memberService.getChkEmail(email))
+                .build()
+        );
     }
 
 
     // nickname 중복 체크
     @GetMapping("/nickname/{nickname}")
-    public ResponseEntity<Message> getChkNickname(@PathVariable("nickname") String nickname){
-        return new ResponseEntity<>(
+    public ResponseEntity<?> getChkNickname(@PathVariable("nickname") String nickname){
+        return ResponseEntity.ok(
                 Message.builder()
                         .status(StatusEnum.OK)
                         .message("")
                         .data(memberService.getChkNickname(nickname))
                         .build()
-                , HttpStatus.OK);
+        );
     }
 
     // 회원가입
