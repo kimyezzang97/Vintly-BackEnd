@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberService {
@@ -92,5 +95,15 @@ public class MemberService {
             member.enableMember();
             memberRepository.save(member);
         }
+    }
+
+    // ID 찾기
+    public List<String> findId(String name, Date birth) {
+        List<Member> memberList = memberRepository.findByNameAndBirth(name, birth);
+        if(memberList.size() == 0) throw new MemberNotExistException();
+        else return memberList
+                .stream()
+                .map(m -> m.getMemberId().substring(0, m.getMemberId().length()-3) + "***")
+                .collect(Collectors.toList());
     }
 }

@@ -4,7 +4,10 @@ import kr.vintly.Entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -25,5 +28,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByMemberIdAndEmailCode(String memberId, String emailCode);
 
     // 인증기간 지난 ID 삭제
-    int deleteByEmailExDateBeforeAndUseYn(Timestamp today, String useYn);
+    Integer deleteByEmailExDateBeforeAndUseYn(Timestamp today, String useYn);
+
+    // ID 찾기
+    List<Member> findByNameAndBirth(String name, Date birth);
 }

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.sql.Date;
 
 @RestController
 @RequestMapping("/members")
@@ -64,7 +65,6 @@ public class MemberController {
 
         return ResponseEntity.ok(Message.builder()
                 .status(StatusEnum.OK)
-                .message("")
                 .message(reqJoinDTO.getMemberId() + " ID로 회원가입을 성공하였습니다.")
                 .build());
     }
@@ -75,4 +75,15 @@ public class MemberController {
         memberService.enableMember(id, emailCode);
         return "이메일 인증에 성공하였습니다. 로그인 후 사용 해주세요.";
     }
+
+    // ID 찾기
+    @GetMapping("/find/id")
+    public ResponseEntity<?> findId(@RequestParam String name, @RequestParam Date birth){
+        return ResponseEntity.ok(Message.builder()
+                .status(StatusEnum.OK)
+                .data(memberService.findId(name, birth))
+                .message("")
+                .build());
+    }
+
 }
