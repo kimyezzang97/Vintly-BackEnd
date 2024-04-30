@@ -32,4 +32,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // ID 찾기
     List<Member> findByNameAndBirth(String name, Date birth);
+
+    Optional<Member> findByMemberId(String hong11);
 }
