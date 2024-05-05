@@ -19,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.util.StreamUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.*;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -83,12 +85,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {
 
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(timestamp);
+        calendar.add(Calendar.SECOND, Integer.parseInt(String.valueOf(expiredMs / 1000)));
+
+        Timestamp newDate = new Timestamp(calendar.getTimeInMillis());
 
         RefreshEntity refreshEntity = RefreshEntity.builder()
                         .memberId(username)
                         .refreshToken(refresh)
-                        .expiration(date.toString())
+                        .expiration(newDate)
                         .build();
 
         refreshRepository.save(refreshEntity);

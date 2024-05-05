@@ -27,10 +27,10 @@ public class RefreshEntity {
     @Column(name = "refresh_token")
     private String refreshToken;
 
-    private String expiration;
+    private Timestamp expiration;
 
     @Builder
-    public RefreshEntity(String memberId, String refreshToken, String expiration){
+    public RefreshEntity(String memberId, String refreshToken, Timestamp expiration){
         this.memberId = memberId;
         this.refreshToken = refreshToken;
         this.expiration = expiration;

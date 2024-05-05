@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 @RestController
 @RequestMapping("/members")
@@ -172,14 +174,19 @@ public class MemberController {
         return cookie;
     }
 
-    private void addRefreshEntity(String username, String refresh, Long expiredMs) {
+    private void addRefreshEntity(String username, String refresh, long expiredMs) {
 
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(timestamp);
+        calendar.add(Calendar.SECOND, Integer.parseInt(String.valueOf(expiredMs / 1000)));
+
+        Timestamp newDate = new Timestamp(calendar.getTimeInMillis());
 
         RefreshEntity refreshEntity = RefreshEntity.builder()
                 .memberId(username)
                 .refreshToken(refresh)
-                .expiration(date.toString())
+                .expiration(newDate)
                 .build();
 
         refreshRepository.save(refreshEntity);
