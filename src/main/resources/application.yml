@@ -32,3 +32,5 @@ spring:
     encoding: UTF-8
     check-template-location: true
     cache: false
+
+secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
